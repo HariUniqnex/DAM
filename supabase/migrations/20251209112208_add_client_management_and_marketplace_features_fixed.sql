@@ -80,7 +80,7 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 -- Create clients table
 CREATE TABLE IF NOT EXISTS clients (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name text NOT NULL,
   company_code text UNIQUE NOT NULL,
   cloudinary_folder text,
@@ -153,7 +153,7 @@ END $$;
 
 -- Create categories table
 CREATE TABLE IF NOT EXISTS categories (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   client_id uuid REFERENCES clients(id) ON DELETE CASCADE,
   name text NOT NULL,
   slug text NOT NULL,
@@ -210,7 +210,7 @@ CREATE POLICY "Admins can update categories"
 
 -- Create brands table
 CREATE TABLE IF NOT EXISTS brands (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   client_id uuid REFERENCES clients(id) ON DELETE CASCADE,
   name text NOT NULL,
   slug text NOT NULL,
@@ -266,7 +266,7 @@ CREATE POLICY "Admins can update brands"
 
 -- Create vendors table
 CREATE TABLE IF NOT EXISTS vendors (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   client_id uuid REFERENCES clients(id) ON DELETE CASCADE,
   name text NOT NULL,
   code text NOT NULL,
@@ -306,7 +306,7 @@ CREATE POLICY "Admins can insert vendors"
 
 -- Create product_metadata table
 CREATE TABLE IF NOT EXISTS product_metadata (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   product_id uuid REFERENCES products(id) ON DELETE CASCADE,
   sku text,
   mpn text,
@@ -405,7 +405,7 @@ END $$;
 
 -- Create promotional_tags table
 CREATE TABLE IF NOT EXISTS promotional_tags (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   client_id uuid REFERENCES clients(id) ON DELETE CASCADE,
   name text NOT NULL,
   tag_type text NOT NULL CHECK (tag_type IN ('gift', 'discount', 'new', 'sale', 'featured')),
@@ -464,7 +464,7 @@ END $$;
 
 -- Create marketplace_operations table
 CREATE TABLE IF NOT EXISTS marketplace_operations (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
   client_id uuid REFERENCES clients(id) ON DELETE CASCADE,
   operation_type text NOT NULL CHECK (operation_type IN (
@@ -506,7 +506,7 @@ CREATE POLICY "Users can update own marketplace operations"
 
 -- Create ai_prompts table
 CREATE TABLE IF NOT EXISTS ai_prompts (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
   client_id uuid REFERENCES clients(id) ON DELETE CASCADE,
   name text NOT NULL,
@@ -546,7 +546,7 @@ CREATE POLICY "Users can update own prompts"
 
 -- Create ar_assets table
 CREATE TABLE IF NOT EXISTS ar_assets (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
   product_id uuid REFERENCES products(id) ON DELETE CASCADE,
   model_id uuid REFERENCES models_3d(id) ON DELETE CASCADE,

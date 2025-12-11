@@ -68,7 +68,7 @@ END $$;
 
 -- Create image_processing_operations table
 CREATE TABLE IF NOT EXISTS image_processing_operations (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
   image_id uuid REFERENCES images(id) ON DELETE CASCADE,
   job_id uuid REFERENCES jobs(id) ON DELETE SET NULL,
@@ -109,7 +109,7 @@ CREATE POLICY "Users can update own processing operations"
 
 -- Create processing_statistics table
 CREATE TABLE IF NOT EXISTS processing_statistics (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES profiles(id) ON DELETE CASCADE UNIQUE,
   total_images_uploaded integer DEFAULT 0,
   total_images_processed integer DEFAULT 0,

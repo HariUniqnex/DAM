@@ -1,8 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
-  Building2, Plus, Edit2, Save, X, Check, Settings, Users, Folder
-} from 'lucide-react';
-import { supabase } from '../lib/supabase';
+  Building2,
+  Plus,
+  Edit2,
+  Save,
+  X,
+  Check,
+  Settings,
+  Users,
+  Folder,
+} from "lucide-react";
+import { supabase } from "../lib/supabase";
 
 interface Client {
   id: string;
@@ -22,13 +30,13 @@ export function ClientManagement() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingClient, setEditingClient] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    company_code: '',
-    cloudinary_folder: '',
-    logo_url: '',
-    primary_color: '#3B82F6',
-    secondary_color: '#1E40AF',
-    is_active: true
+    name: "",
+    company_code: "",
+    cloudinary_folder: "",
+    logo_url: "",
+    primary_color: "#3B82F6",
+    secondary_color: "#1E40AF",
+    is_active: true,
   });
 
   useEffect(() => {
@@ -38,14 +46,14 @@ export function ClientManagement() {
   const fetchClients = async () => {
     try {
       const { data, error } = await supabase
-        .from('clients')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .from("clients")
+        .select("*")
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
       setClients(data || []);
     } catch (error) {
-      console.error('Error fetching clients:', error);
+      console.error("Error fetching clients:", error);
     } finally {
       setLoading(false);
     }
@@ -57,15 +65,13 @@ export function ClientManagement() {
     try {
       if (editingClient) {
         const { error } = await supabase
-          .from('clients')
+          .from("clients")
           .update(formData)
-          .eq('id', editingClient);
+          .eq("id", editingClient);
 
         if (error) throw error;
       } else {
-        const { error } = await supabase
-          .from('clients')
-          .insert([formData]);
+        const { error } = await supabase.from("clients").insert([formData]);
 
         if (error) throw error;
       }
@@ -73,13 +79,13 @@ export function ClientManagement() {
       setShowAddForm(false);
       setEditingClient(null);
       setFormData({
-        name: '',
-        company_code: '',
-        cloudinary_folder: '',
-        logo_url: '',
-        primary_color: '#3B82F6',
-        secondary_color: '#1E40AF',
-        is_active: true
+        name: "",
+        company_code: "",
+        cloudinary_folder: "",
+        logo_url: "",
+        primary_color: "#3B82F6",
+        secondary_color: "#1E40AF",
+        is_active: true,
       });
       fetchClients();
     } catch (error: any) {
@@ -91,11 +97,11 @@ export function ClientManagement() {
     setFormData({
       name: client.name,
       company_code: client.company_code,
-      cloudinary_folder: client.cloudinary_folder || '',
-      logo_url: client.logo_url || '',
+      cloudinary_folder: client.cloudinary_folder || "",
+      logo_url: client.logo_url || "",
       primary_color: client.primary_color,
       secondary_color: client.secondary_color,
-      is_active: client.is_active
+      is_active: client.is_active,
     });
     setEditingClient(client.id);
     setShowAddForm(true);
@@ -105,13 +111,13 @@ export function ClientManagement() {
     setShowAddForm(false);
     setEditingClient(null);
     setFormData({
-      name: '',
-      company_code: '',
-      cloudinary_folder: '',
-      logo_url: '',
-      primary_color: '#3B82F6',
-      secondary_color: '#1E40AF',
-      is_active: true
+      name: "",
+      company_code: "",
+      cloudinary_folder: "",
+      logo_url: "",
+      primary_color: "#3B82F6",
+      secondary_color: "#1E40AF",
+      is_active: true,
     });
   };
 
@@ -127,8 +133,12 @@ export function ClientManagement() {
     <div className="max-w-7xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Client Management</h1>
-          <p className="text-slate-600 mt-1">Manage client accounts and settings</p>
+          <h1 className="text-3xl font-bold text-slate-900">
+            Client Management
+          </h1>
+          <p className="text-slate-600 mt-1">
+            Manage client accounts and settings
+          </p>
         </div>
         <button
           onClick={() => setShowAddForm(true)}
@@ -142,7 +152,7 @@ export function ClientManagement() {
       {showAddForm && (
         <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
           <h2 className="text-xl font-bold text-slate-900 mb-4">
-            {editingClient ? 'Edit Client' : 'Add New Client'}
+            {editingClient ? "Edit Client" : "Add New Client"}
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -154,7 +164,9 @@ export function ClientManagement() {
                 <input
                   type="text"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   required
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Enter client name"
@@ -168,7 +180,9 @@ export function ClientManagement() {
                 <input
                   type="text"
                   value={formData.company_code}
-                  onChange={(e) => setFormData({ ...formData, company_code: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, company_code: e.target.value })
+                  }
                   required
                   disabled={!!editingClient}
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-slate-100"
@@ -183,7 +197,12 @@ export function ClientManagement() {
                 <input
                   type="text"
                   value={formData.cloudinary_folder}
-                  onChange={(e) => setFormData({ ...formData, cloudinary_folder: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      cloudinary_folder: e.target.value,
+                    })
+                  }
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="e.g., clients/abc-company"
                 />
@@ -196,7 +215,9 @@ export function ClientManagement() {
                 <input
                   type="url"
                   value={formData.logo_url}
-                  onChange={(e) => setFormData({ ...formData, logo_url: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, logo_url: e.target.value })
+                  }
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="https://example.com/logo.png"
                 />
@@ -210,13 +231,23 @@ export function ClientManagement() {
                   <input
                     type="color"
                     value={formData.primary_color}
-                    onChange={(e) => setFormData({ ...formData, primary_color: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        primary_color: e.target.value,
+                      })
+                    }
                     className="h-10 w-20 border border-slate-300 rounded cursor-pointer"
                   />
                   <input
                     type="text"
                     value={formData.primary_color}
-                    onChange={(e) => setFormData({ ...formData, primary_color: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        primary_color: e.target.value,
+                      })
+                    }
                     className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
@@ -230,13 +261,23 @@ export function ClientManagement() {
                   <input
                     type="color"
                     value={formData.secondary_color}
-                    onChange={(e) => setFormData({ ...formData, secondary_color: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        secondary_color: e.target.value,
+                      })
+                    }
                     className="h-10 w-20 border border-slate-300 rounded cursor-pointer"
                   />
                   <input
                     type="text"
                     value={formData.secondary_color}
-                    onChange={(e) => setFormData({ ...formData, secondary_color: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        secondary_color: e.target.value,
+                      })
+                    }
                     className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
@@ -248,10 +289,15 @@ export function ClientManagement() {
                 type="checkbox"
                 id="is_active"
                 checked={formData.is_active}
-                onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+                onChange={(e) =>
+                  setFormData({ ...formData, is_active: e.target.checked })
+                }
                 className="w-4 h-4 text-blue-600 rounded"
               />
-              <label htmlFor="is_active" className="text-sm font-medium text-slate-700">
+              <label
+                htmlFor="is_active"
+                className="text-sm font-medium text-slate-700"
+              >
                 Active
               </label>
             </div>
@@ -270,7 +316,7 @@ export function ClientManagement() {
                 className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 <Save className="w-4 h-4" />
-                <span>{editingClient ? 'Update' : 'Create'} Client</span>
+                <span>{editingClient ? "Update" : "Create"} Client</span>
               </button>
             </div>
           </form>
@@ -301,7 +347,9 @@ export function ClientManagement() {
                 )}
                 <div>
                   <h3 className="font-bold text-slate-900">{client.name}</h3>
-                  <p className="text-sm text-slate-500">{client.company_code}</p>
+                  <p className="text-sm text-slate-500">
+                    {client.company_code}
+                  </p>
                 </div>
               </div>
               <button
@@ -337,8 +385,8 @@ export function ClientManagement() {
                 <span
                   className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
                     client.is_active
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-slate-100 text-slate-700'
+                      ? "bg-green-100 text-green-700"
+                      : "bg-slate-100 text-slate-700"
                   }`}
                 >
                   {client.is_active ? (
@@ -347,7 +395,7 @@ export function ClientManagement() {
                       Active
                     </>
                   ) : (
-                    'Inactive'
+                    "Inactive"
                   )}
                 </span>
               </div>
@@ -359,8 +407,12 @@ export function ClientManagement() {
       {clients.length === 0 && !showAddForm && (
         <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-slate-200">
           <Building2 className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-slate-900 mb-2">No clients yet</h3>
-          <p className="text-slate-600 mb-4">Get started by adding your first client</p>
+          <h3 className="text-lg font-semibold text-slate-900 mb-2">
+            No clients yet
+          </h3>
+          <p className="text-slate-600 mb-4">
+            Get started by adding your first client
+          </p>
           <button
             onClick={() => setShowAddForm(true)}
             className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"

@@ -107,7 +107,7 @@ CREATE POLICY "Admins can view all profiles"
 
 -- Products table
 CREATE TABLE IF NOT EXISTS products (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
   name text NOT NULL,
   description text,
@@ -150,7 +150,7 @@ CREATE POLICY "Users can delete own products"
 
 -- Product components table
 CREATE TABLE IF NOT EXISTS product_components (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   product_id uuid REFERENCES products(id) ON DELETE CASCADE,
   name text NOT NULL,
   type text NOT NULL CHECK (type IN ('leg', 'cushion', 'fabric', 'hardware', 'frame', 'other')),
@@ -218,7 +218,7 @@ CREATE POLICY "Users can delete components of own products"
 
 -- Uploads table
 CREATE TABLE IF NOT EXISTS uploads (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
   product_id uuid REFERENCES products(id) ON DELETE SET NULL,
   status text DEFAULT 'uploaded' CHECK (status IN ('uploaded', 'processing', 'completed', 'failed')),
@@ -247,7 +247,7 @@ CREATE POLICY "Users can update own uploads"
 
 -- Images table
 CREATE TABLE IF NOT EXISTS images (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   upload_id uuid REFERENCES uploads(id) ON DELETE CASCADE,
   user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
   url text NOT NULL,
@@ -286,7 +286,7 @@ CREATE POLICY "Users can delete own images"
 
 -- Textures table
 CREATE TABLE IF NOT EXISTS textures (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
   name text NOT NULL,
   albedo_url text NOT NULL,
@@ -325,7 +325,7 @@ CREATE POLICY "Users can delete own textures"
 
 -- 3D Models table
 CREATE TABLE IF NOT EXISTS models_3d (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
   product_id uuid REFERENCES products(id) ON DELETE CASCADE,
   upload_id uuid REFERENCES uploads(id) ON DELETE SET NULL,
@@ -369,7 +369,7 @@ CREATE POLICY "Users can delete own 3D models"
 
 -- Configurations table
 CREATE TABLE IF NOT EXISTS configurations (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
   product_id uuid REFERENCES products(id) ON DELETE CASCADE,
   name text,
@@ -407,7 +407,7 @@ CREATE POLICY "Users can delete own configurations"
 
 -- Jobs table
 CREATE TABLE IF NOT EXISTS jobs (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
   type text NOT NULL CHECK (type IN ('segment', 'stain', '3d', 'render', 'export')),
   status text DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'completed', 'failed')),
@@ -442,7 +442,7 @@ CREATE POLICY "Users can update own jobs"
 
 -- Stain library table
 CREATE TABLE IF NOT EXISTS stain_library (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name text NOT NULL,
   color_hex text NOT NULL,
   color_lab jsonb,
@@ -473,7 +473,7 @@ CREATE POLICY "Admins can insert stains"
 
 -- Fabric library table
 CREATE TABLE IF NOT EXISTS fabric_library (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name text NOT NULL,
   category text,
   color text,
@@ -503,7 +503,7 @@ CREATE POLICY "Admins can insert fabrics"
 
 -- Render outputs table
 CREATE TABLE IF NOT EXISTS render_outputs (
-  id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
   model_id uuid REFERENCES models_3d(id) ON DELETE CASCADE,
   type text CHECK (type IN ('360_video', 'turntable', 'ar_preview', 'thumbnail')),

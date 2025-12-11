@@ -1,6 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Clock, CheckCircle, XCircle, Loader2, AlertCircle } from 'lucide-react';
-import { api } from '../services/api';
+import { useState, useEffect } from "react";
+import {
+  Clock,
+  CheckCircle,
+  XCircle,
+  Loader2,
+  AlertCircle,
+} from "lucide-react";
+import { api } from "../services/api";
 
 interface Job {
   id: string;
@@ -27,7 +33,7 @@ export function JobTracker() {
       const data = await api.getJobs();
       setJobs(data);
     } catch (error) {
-      console.error('Failed to load jobs:', error);
+      console.error("Failed to load jobs:", error);
     } finally {
       setLoading(false);
     }
@@ -35,11 +41,11 @@ export function JobTracker() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'completed':
+      case "completed":
         return <CheckCircle className="w-5 h-5 text-green-500" />;
-      case 'failed':
+      case "failed":
         return <XCircle className="w-5 h-5 text-red-500" />;
-      case 'processing':
+      case "processing":
         return <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />;
       default:
         return <Clock className="w-5 h-5 text-slate-400" />;
@@ -48,14 +54,18 @@ export function JobTracker() {
 
   const getStatusBadge = (status: string) => {
     const styles = {
-      completed: 'bg-green-100 text-green-700',
-      failed: 'bg-red-100 text-red-700',
-      processing: 'bg-blue-100 text-blue-700',
-      pending: 'bg-slate-100 text-slate-700'
+      completed: "bg-green-100 text-green-700",
+      failed: "bg-red-100 text-red-700",
+      processing: "bg-blue-100 text-blue-700",
+      pending: "bg-slate-100 text-slate-700",
     };
 
     return (
-      <span className={`px-2 py-1 rounded text-xs font-medium ${styles[status as keyof typeof styles] || styles.pending}`}>
+      <span
+        className={`px-2 py-1 rounded text-xs font-medium ${
+          styles[status as keyof typeof styles] || styles.pending
+        }`}
+      >
         {status}
       </span>
     );
@@ -63,11 +73,11 @@ export function JobTracker() {
 
   const getJobTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
-      segment: 'Segmentation',
-      stain: 'Stain Recolor',
-      '3d': '3D Generation',
-      render: '360° Render',
-      export: 'Export'
+      segment: "Segmentation",
+      stain: "Stain Recolor",
+      "3d": "3D Generation",
+      render: "360° Render",
+      export: "Export",
     };
     return labels[type] || type;
   };
@@ -82,16 +92,21 @@ export function JobTracker() {
 
   return (
     <div className="bg-white rounded-xl shadow-sm p-6">
-      <h2 className="text-2xl font-bold text-slate-900 mb-4">Processing Jobs</h2>
+      <h2 className="text-2xl font-bold text-slate-900 mb-4">
+        Processing Jobs
+      </h2>
       <p className="text-slate-600 mb-6">
-        Track the status of your image processing, 3D generation, and rendering jobs.
+        Track the status of your image processing, 3D generation, and rendering
+        jobs.
       </p>
 
       {jobs.length === 0 ? (
         <div className="text-center py-12">
           <AlertCircle className="w-16 h-16 text-slate-300 mx-auto mb-4" />
           <p className="text-slate-600 font-medium">No jobs yet</p>
-          <p className="text-slate-500 text-sm mt-1">Upload images and start processing to see jobs here</p>
+          <p className="text-slate-500 text-sm mt-1">
+            Upload images and start processing to see jobs here
+          </p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -125,7 +140,9 @@ export function JobTracker() {
                     )}
                   </div>
                 </div>
-                <span className="text-xs text-slate-500 font-mono ml-4">{job.id.slice(0, 8)}</span>
+                <span className="text-xs text-slate-500 font-mono ml-4">
+                  {job.id.slice(0, 8)}
+                </span>
               </div>
             </div>
           ))}
@@ -134,7 +151,9 @@ export function JobTracker() {
 
       <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
         <p className="text-sm text-blue-700">
-          <strong>Note:</strong> This is a demonstration interface. In production, jobs would be processed by GPU workers with OpenAI models, photogrammetry tools, and Blender rendering.
+          <strong>Note:</strong> This is a demonstration interface. In
+          production, jobs would be processed by GPU workers with OpenAI models,
+          photogrammetry tools, and Blender rendering.
         </p>
       </div>
     </div>

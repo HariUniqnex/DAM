@@ -16,6 +16,7 @@ export interface JobResponse {
 export const api = {
   async ensureProfile() {
     const user = (await supabase.auth.getUser()).data.user;
+    console.log("USERRRRR",user)
     if (!user) throw new Error('Not authenticated');
 
     const { data: profile } = await supabase
@@ -103,7 +104,20 @@ export const api = {
       status: 'uploaded'
     };
   },
-
+  async processImageAI(imageId:string,imageUrl:string,operation:'bg-remove',originalName?:string)
+  {
+    const {data,error}=await supabase.functions.invoke('process-image',{
+      body:{
+        imageId,imageUrl,operation,originalName
+      }
+    })
+    if(error)
+    {
+      console.error("Edge function error",error)
+      throw error
+    }
+    return data
+  },
   async createSegmentationJob(uploadId: string, options: any): Promise<JobResponse> {
     const user = (await supabase.auth.getUser()).data.user;
     if (!user) throw new Error('Not authenticated');
